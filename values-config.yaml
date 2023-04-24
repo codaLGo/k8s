@@ -1,0 +1,82 @@
+################################################################################################
+###                                       CONFIGURATION                                      ###
+################################################################################################
+
+### Defaults
+
+default:
+  imagePullPolicy: Always
+  serviceAccount: tron
+  registryRoot: repo.cloud.tronsec.ru/repository/tron-customer
+  ingress:
+    create: true
+    class: nginx
+
+### Pull Secrets
+
+pullSecret:
+  tron-pullsecret:
+    registry: repo.cloud.tronsec.ru
+    username: pilot-mf
+    password: b5BvVdfUG4vNQd7H
+    email: test@example.com
+
+### Service Accounts
+
+serviceAccount:
+  tron:
+    imagePullSecret:
+    - tron-pullsecret
+
+### Ingresses
+
+ingress:
+  tron-panel:
+    className: nginx
+    url: tron.testdomain.ximi
+    path: "/"
+  tron-api:
+    className: nginx
+    url: tron.testdomain.ximi
+    path: "/api"
+
+### Persistent Volumes (PV)
+
+persistentVolume:
+  postgresql: 10Gi
+  redis: 1Gi
+  tron-panel: 1Gi
+  minio: 1Gi
+  rabbitmq: 1Gi
+
+### Common secrets
+
+secret:
+  infracreds:
+    envs:
+      APP_SECRET: 18e2250829598154770667fc6f76eab4
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      PGUSER: pguser
+      PGPASSWORD: pgpass
+      MINIO_ACCESS_KEY: minioaccess
+      MINIO_SECRET_KEY: miniosecret
+      RABBITMQ_DEFAULT_USER: rabbituser
+      RABBITMQ_DEFAULT_PASS: rabbitpass
+      DATABASE_URL: pgsql://pguser:pgpass@tron-postgres/api
+      RABBITMQ_URL: amqp://rabbituser:rabbitpass@tron-rmq:5672
+      RABBITMQ_MANAGE_URL: http://rabbituser:rabbitpass@tron-rmq-mgmt:15672/api/
+
+### Common configmaps
+
+configmap:
+  infraconfig:
+    envs:
+      API_URL: http://tron.testdomain.ximi
+      COOKIE_DOMAIN: tron.testdomain.ximi
+      REGISTRY_AGENT_URL: repo.cloud.tronsec.ru/repository/tron-customer
+      UPDATE_SERVER_URL: https://tron-update-bucket.website.yandexcloud.net/
+      REDIS_URL: redis://tron-redis/0
+      KUBE_AGENT_TAG: v0.7.1.2
+      NODE_AGENT_TAG: v0.7.1.2
+      SCANNER_TAG: v0.7.1.2
