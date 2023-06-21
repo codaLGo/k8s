@@ -1,0 +1,14 @@
+export NAMESPACE=ingress-nginx-internal
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm upgrade -i ingress-nginx-internal ingress-nginx/ingress-nginx \
+  --create-namespace \
+  --namespace $NAMESPACE \
+  --set controller.service.annotations."yandex\.cloud/load-balancer-type"=internal \
+  --set controller.service.annotations."yandex\.cloud/subnet-id"=e2ldp1eaq5hra54vcq74 \
+  --set controller.service.annotations."meta.helm.sh/release-namespace"=ingress-nginx-internal \
+  --set controller.ingressClassResource.name=nginx-internal \
+  --set controller.ingressClassResource.controllerValue="int.tronsec.ru/ingress-nginx-internal" \
+  --set controller.ingressClassResource.enabled=true \
+  --set controller.ingressClassByName=true
