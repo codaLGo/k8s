@@ -283,18 +283,20 @@ nats:
     fileStorage:
       enabled: true
       storageDirectory: /data
-      existingClaim: pvc-nats-js-tron
-      claimStorageSize: 3Gi
+      # existingClaim: pvc-nats-js-tron
+      # claimStorageSize: 3Gi
       # Set for use with existing PVC
       # existingClaim: jetstream-pvc
       # claimStorageSize: 10Gi
 
       # Use below block to create new persistent volume
       # only used if existingClaim is not specified
-      # size: 10Gi
+      size: {DISK_SIZE_NATS}
+      storageClassName: {STORAGE_CLASS_NAME}
+      # size: 3Gi
       # storageClassName: "yc-network-hdd"
-      # accessModes:
-      #   - ReadWriteOnce
+      accessModes:
+        - ReadWriteOnce
       # annotations:
       # key: "value"
 
